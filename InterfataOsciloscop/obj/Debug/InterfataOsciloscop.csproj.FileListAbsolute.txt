@@ -1,0 +1,10 @@
+C:\repouri\Osciloscop\InterfataOsciloscop\bin\Debug\InterfataOsciloscop.exe.config
+C:\repouri\Osciloscop\InterfataOsciloscop\bin\Debug\InterfataOsciloscop.exe
+C:\repouri\Osciloscop\InterfataOsciloscop\bin\Debug\InterfataOsciloscop.pdb
+C:\repouri\Osciloscop\InterfataOsciloscop\obj\Debug\InterfataOsciloscop.csproj.AssemblyReference.cache
+C:\repouri\Osciloscop\InterfataOsciloscop\obj\Debug\InterfataOsciloscop.Form1.resources
+C:\repouri\Osciloscop\InterfataOsciloscop\obj\Debug\InterfataOsciloscop.Properties.Resources.resources
+C:\repouri\Osciloscop\InterfataOsciloscop\obj\Debug\InterfataOsciloscop.csproj.GenerateResource.cache
+C:\repouri\Osciloscop\InterfataOsciloscop\obj\Debug\InterfataOsciloscop.csproj.CoreCompileInputs.cache
+C:\repouri\Osciloscop\InterfataOsciloscop\obj\Debug\InterfataOsciloscop.exe
+C:\repouri\Osciloscop\InterfataOsciloscop\obj\Debug\InterfataOsciloscop.pdb
