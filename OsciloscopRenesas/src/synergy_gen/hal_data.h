@@ -4,6 +4,10 @@
 #include <stdint.h>
 #include "bsp_api.h"
 #include "common_data.h"
+#include "r_dmac.h"
+#include "r_transfer_api.h"
+#include "r_gpt.h"
+#include "r_timer_api.h"
 #include "r_adc.h"
 #include "r_adc_api.h"
 #include "r_dtc.h"
@@ -12,6 +16,16 @@
 #include "r_uart_api.h"
 #ifdef __cplusplus
 extern "C" {
+#endif
+/* Transfer on DMAC Instance. */
+extern const transfer_instance_t g_transfer1;
+#ifndef NULL
+void NULL(transfer_callback_args_t *p_args);
+#endif
+/** Timer on GPT Instance. */
+extern const timer_instance_t g_timer0;
+#ifndef intrerupere_timer
+void intrerupere_timer(timer_callback_args_t *p_args);
 #endif
 /** ADC on ADC Instance. */
 extern const adc_instance_t g_adc0;

@@ -33,7 +33,7 @@ namespace InterfataOsciloscop
             while (shouldRun)
             {
                 ProgramData.Instance.ReadDebugValuesFromUart();
-                Thread.Sleep(0);
+                //Thread.Sleep(0);
             }
         }
 

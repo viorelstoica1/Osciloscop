@@ -5,7 +5,7 @@ namespace InterfataOsciloscop
 {
     class OsciloscopeData
     {
-        public const int MarimeBufferTensiuni = 100;
+        public const int MarimeBufferTensiuni = 1000;
         public ushort[] Tensiuni;
 
         public OsciloscopeData()

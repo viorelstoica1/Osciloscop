@@ -7,18 +7,9 @@ using System.Threading.Tasks;
 
 namespace InterfataOsciloscop
 {
-    enum ModulesHeader  /*IMPORTANT - valorile sunt folosite intr-un calcul de index mai jos, nu le schimba*/
+    enum ModulesHeader
     {
-        VOLTAGES_0 = 10,
-        VOLTAGES_1 = 11,
-        VOLTAGES_2 = 12,
-        VOLTAGES_3 = 13,
-        VOLTAGES_4 = 14,
-        VOLTAGES_5 = 15,
-        VOLTAGES_6 = 16,
-        VOLTAGES_7 = 17,
-        VOLTAGES_8 = 18,
-        VOLTAGES_9 = 19
+        VOLTAGES = 10
     }
     class UartPortData
     {
@@ -39,9 +30,9 @@ namespace InterfataOsciloscop
         public static int dateInvalide = 0;
         public static int octetiPierduti = 0;
         //uart buffer variables
-        private const int BUFFER_SIZE = 200;
+        private const int BUFFER_SIZE = 3000;
         public static BufferCircular bufferUart = new BufferCircular(BUFFER_SIZE);
-        private static byte[] bufferTemporar = new byte[17];
+        private static byte[] bufferTemporar = new byte[18];
         private static byte calculateCRC(uint length, byte[] buffer)
         {
             uint divisor = 0x8D, dividend;
@@ -71,41 +62,37 @@ namespace InterfataOsciloscop
                 redoParse = false;
                 switch (bufferUart.GetItem(0))
                 {
-                    case (byte)ModulesHeader.VOLTAGES_0:
-                    case (byte)ModulesHeader.VOLTAGES_1:
-                    case (byte)ModulesHeader.VOLTAGES_2:
-                    case (byte)ModulesHeader.VOLTAGES_3:
-                    case (byte)ModulesHeader.VOLTAGES_4:
-                    case (byte)ModulesHeader.VOLTAGES_5:
-                    case (byte)ModulesHeader.VOLTAGES_6:
-                    case (byte)ModulesHeader.VOLTAGES_7:
-                    case (byte)ModulesHeader.VOLTAGES_8:
-                    case (byte)ModulesHeader.VOLTAGES_9:
-                        if (bufferUart.ItemsInside() >= 17)
+                    case (byte)ModulesHeader.VOLTAGES:
+                        if (bufferUart.ItemsInside() >= 18)
                         {
-                            for (uint i = 0; i < 17; i++)
+                            for (uint i = 0; i < 18; i++)
                             {
                                 bufferTemporar[i] = bufferUart.GetItem(i);
                             }
-                            if (calculateCRC(17, bufferTemporar) == 0)
+                            if (calculateCRC(18, bufferTemporar) == 0)
                             {
                                 ushort[] tensiuniPrimite = new ushort[10];
-                                tensiuniPrimite[0] = (ushort)((((uint)bufferTemporar[1]) << 4) + (((uint)bufferTemporar[2]) >> 4));
-                                tensiuniPrimite[1] = (ushort)(((((uint)bufferTemporar[2]) % 0x10) << 8) + (((uint)bufferTemporar[3])));
-                                tensiuniPrimite[2] = (ushort)((((uint)bufferTemporar[4]) << 4) + (((uint)bufferTemporar[5]) >> 4));
-                                tensiuniPrimite[3] = (ushort)(((((uint)bufferTemporar[5]) % 0x10) << 8) + (((uint)bufferTemporar[6])));
-                                tensiuniPrimite[4] = (ushort)((((uint)bufferTemporar[7]) << 4) + (((uint)bufferTemporar[8]) >> 4));
-                                tensiuniPrimite[5] = (ushort)(((((uint)bufferTemporar[8]) % 0x10) << 8) + (((uint)bufferTemporar[9])));
-                                tensiuniPrimite[6] = (ushort)((((uint)bufferTemporar[10]) << 4) + (((uint)bufferTemporar[11]) >> 4));
-                                tensiuniPrimite[7] = (ushort)(((((uint)bufferTemporar[11]) % 0x10) << 8) + (((uint)bufferTemporar[12])));
-                                tensiuniPrimite[8] = (ushort)((((uint)bufferTemporar[13]) << 4) + (((uint)bufferTemporar[14]) >> 4));
-                                tensiuniPrimite[9] = (ushort)(((((uint)bufferTemporar[14]) % 0x10) << 8) + (((uint)bufferTemporar[15])));
+                                ushort indexTensiuniPrimite = bufferTemporar[1];
+                                tensiuniPrimite[0] = (ushort)((((uint)bufferTemporar[2]) << 4) + (((uint)bufferTemporar[3]) >> 4));
+                                tensiuniPrimite[1] = (ushort)(((((uint)bufferTemporar[3]) % 0x10) << 8) + (((uint)bufferTemporar[4])));
+                                tensiuniPrimite[2] = (ushort)((((uint)bufferTemporar[5]) << 4) + (((uint)bufferTemporar[6]) >> 4));
+                                tensiuniPrimite[3] = (ushort)(((((uint)bufferTemporar[6]) % 0x10) << 8) + (((uint)bufferTemporar[7])));
+                                tensiuniPrimite[4] = (ushort)((((uint)bufferTemporar[8]) << 4) + (((uint)bufferTemporar[9]) >> 4));
+                                tensiuniPrimite[5] = (ushort)(((((uint)bufferTemporar[9]) % 0x10) << 8) + (((uint)bufferTemporar[10])));
+                                tensiuniPrimite[6] = (ushort)((((uint)bufferTemporar[11]) << 4) + (((uint)bufferTemporar[12]) >> 4));
+                                tensiuniPrimite[7] = (ushort)(((((uint)bufferTemporar[12]) % 0x10) << 8) + (((uint)bufferTemporar[13])));
+                                tensiuniPrimite[8] = (ushort)((((uint)bufferTemporar[14]) << 4) + (((uint)bufferTemporar[15]) >> 4));
+                                tensiuniPrimite[9] = (ushort)(((((uint)bufferTemporar[15]) % 0x10) << 8) + (((uint)bufferTemporar[16])));
 
                                 for (int i = 0; i < 10; i++) {
-                                    ProgramData.Instance.Data.Tensiuni[i + (bufferTemporar[0]-10) * 10] = tensiuniPrimite[i];
+                                    if(indexTensiuniPrimite == 0)
+                                    {
+                                        mesajeValide++;
+                                    }
+                                    ProgramData.Instance.Data.Tensiuni[i + indexTensiuniPrimite * 10] = tensiuniPrimite[i];
                                 }
                                 mesajeValide++;
-                                bufferUart.ScoateValori(17);
+                                bufferUart.ScoateValori(18);
                                 redoParse = true;
                                 mesajeTotale++;
                             }

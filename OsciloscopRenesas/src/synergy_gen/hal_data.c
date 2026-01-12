@@ -1,5 +1,53 @@
 /* generated HAL source file - do not edit */
 #include "hal_data.h"
+#if (BSP_IRQ_DISABLED) != BSP_IRQ_DISABLED
+#if !defined(SSP_SUPPRESS_ISR_g_transfer1) && !defined(SSP_SUPPRESS_ISR_DMACELC_EVENT_ELC_SOFTWARE_EVENT_0)
+SSP_VECTOR_DEFINE_CHAN(dmac_int_isr, DMAC, INT, 0);
+#endif
+#endif
+dmac_instance_ctrl_t g_transfer1_ctrl;
+transfer_info_t g_transfer1_info =
+{ .dest_addr_mode = TRANSFER_ADDR_MODE_FIXED,
+  .repeat_area = TRANSFER_REPEAT_AREA_SOURCE,
+  .irq = TRANSFER_IRQ_EACH,
+  .chain_mode = TRANSFER_CHAIN_MODE_DISABLED,
+  .src_addr_mode = TRANSFER_ADDR_MODE_FIXED,
+  .size = TRANSFER_SIZE_2_BYTE,
+  .mode = TRANSFER_MODE_NORMAL,
+  .p_dest = (void*) NULL,
+  .p_src = (void const*) NULL,
+  .num_blocks = 0,
+  .length = 0, };
+const transfer_on_dmac_cfg_t g_transfer1_extend =
+{ .channel = 0, .offset_byte = 0, };
+const transfer_cfg_t g_transfer1_cfg =
+{ .p_info = &g_transfer1_info, .activation_source = ELC_EVENT_ELC_SOFTWARE_EVENT_0, .auto_enable = true, .p_callback =
+          NULL,
+  .p_context = &g_transfer1, .irq_ipl = (BSP_IRQ_DISABLED), .p_extend = &g_transfer1_extend, };
+/* Instance structure to use this module. */
+const transfer_instance_t g_transfer1 =
+{ .p_ctrl = &g_transfer1_ctrl, .p_cfg = &g_transfer1_cfg, .p_api = &g_transfer_on_dmac };
+#if (12) != BSP_IRQ_DISABLED
+#if !defined(SSP_SUPPRESS_ISR_g_timer0) && !defined(SSP_SUPPRESS_ISR_GPT0)
+SSP_VECTOR_DEFINE_CHAN(gpt_counter_overflow_isr, GPT, COUNTER_OVERFLOW, 0);
+#endif
+#endif
+static gpt_instance_ctrl_t g_timer0_ctrl;
+static const timer_on_gpt_cfg_t g_timer0_extend =
+{ .gtioca =
+{ .output_enabled = false, .stop_level = GPT_PIN_LEVEL_LOW },
+  .gtiocb =
+  { .output_enabled = false, .stop_level = GPT_PIN_LEVEL_LOW },
+  .shortest_pwm_signal = GPT_SHORTEST_LEVEL_OFF, };
+static const timer_cfg_t g_timer0_cfg =
+{ .mode = TIMER_MODE_ONE_SHOT, .period = 10, .unit = TIMER_UNIT_PERIOD_USEC, .duty_cycle = 50, .duty_cycle_unit =
+          TIMER_PWM_UNIT_RAW_COUNTS,
+  .channel = 0, .autostart = false, .p_callback = intrerupere_timer, .p_context = &g_timer0, .p_extend =
+          &g_timer0_extend,
+  .irq_ipl = (12), };
+/* Instance structure to use this module. */
+const timer_instance_t g_timer0 =
+{ .p_ctrl = &g_timer0_ctrl, .p_cfg = &g_timer0_cfg, .p_api = &g_timer_on_gpt };
 #if (12) != BSP_IRQ_DISABLED
 #if !defined(SSP_SUPPRESS_ISR_g_adc0) && !defined(SSP_SUPPRESS_ISR_ADC0)
 SSP_VECTOR_DEFINE_CHAN(adc_scan_end_isr, ADC, SCAN_END, 0);
@@ -128,7 +176,7 @@ const uart_on_sci_cfg_t g_uart0_cfg_extend =
 
 /** UART interface configuration */
 const uart_cfg_t g_uart0_cfg =
-{ .channel = 3, .baud_rate = 115200, .data_bits = UART_DATA_BITS_8, .parity = UART_PARITY_OFF, .stop_bits =
+{ .channel = 3, .baud_rate = 921600, .data_bits = UART_DATA_BITS_8, .parity = UART_PARITY_OFF, .stop_bits =
           UART_STOP_BITS_1,
   .ctsrts_en = false, .p_callback = user_uart_callback, .p_context = &g_uart0, .p_extend = &g_uart0_cfg_extend,
 #define SYNERGY_NOT_DEFINED (1)                        

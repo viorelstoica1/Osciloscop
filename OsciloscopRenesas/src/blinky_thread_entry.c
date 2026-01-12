@@ -4,17 +4,28 @@
 ***********************************************************************************************************************/
 
 #include "blinky_thread.h"
-volatile uint32_t NumIntreruperiAprinse = 0U;
+volatile uint32_t flagUart = 0U;
 volatile uint32_t flagAdc = 0U;
-uint8_t uart0_buf[17];
+volatile uint32_t flagTimer = 0U;
+#define UART_MESSAGE_SIZE 18U
+uint8_t uart0_buf[UART_MESSAGE_SIZE];
+#define ADC_BUF_SIZE 1000U
+#define UART_SEND_MESSAGES 100U
 
 uint8_t CRC_calculate(uint8_t length);
 void user_uart_callback(uart_callback_args_t *p_args){
-    NumIntreruperiAprinse++;
+    (void)p_args;
+    flagUart=1U;
 }
 
 void intrerupere_adc(adc_callback_args_t *p_args){
+    (void)p_args;
     flagAdc=1;
+}
+
+void intrerupere_timer(timer_callback_args_t *p_args){
+    (void)p_args;
+    flagTimer=1;
 }
 
 uint8_t CRC_calculate(uint8_t length){
@@ -57,51 +68,56 @@ uint8_t CRC_calculate(uint8_t length){
  **********************************************************************************************************************/
 void blinky_thread_entry(void)
 {
-
-    volatile uint32_t delei = 1U; /*100 inseamna o secunda*/
-    /*variabile UART*/
-    volatile uint8_t uart0_send_num = 17U;
-    volatile uint8_t uart_header_index = 0U;
     /*variabile pentru ADC*/
-    volatile uint16_t valoareCititaAdc = 0U;
-    volatile uint16_t adc_buf[10];
-    volatile uint16_t adc_index = 0U;
+    uint16_t adc_buf[ADC_BUF_SIZE];
+    uint16_t valoareCititaAdc;
+    /*initializari ELC*/
+    //g_elc.p_api->linkSet(ELC_PERIPHERAL_ADC0, ELC_EVENT_GPT0_COUNTER_OVERFLOW);
+    //g_elc.p_api->init();
+    //g_elc.p_api->enable();
+    /*Initializari timer*/
+    g_timer0.p_api->open(g_timer0.p_ctrl, g_timer0.p_cfg);
     /*Initializari ADC*/
     g_adc0.p_api->open(g_adc0.p_ctrl, g_adc0.p_cfg);
     g_adc0.p_api->scanCfg(g_adc0.p_ctrl, g_adc0.p_channel_cfg);
     /*initializari UART*/
     g_uart0.p_api->open(g_uart0.p_ctrl, g_uart0.p_cfg);
     while(1){
-        /*Citire de pe ADC pana are 10 valori*/
-        while(adc_index < 10U){
-            tx_thread_sleep(delei);
+        /*Citire de pe ADC pana are ADC_BUF_SIZE valori*/
+        for(uint16_t adc_index = 0U; adc_index < ADC_BUF_SIZE; adc_index++){
+            g_timer0.p_api->start(g_timer0.p_ctrl);
+            while(flagTimer == 0U);
+            flagTimer = 0U;
             g_adc0.p_api->scanStart(g_adc0.p_ctrl);
             while(flagAdc == 0);
-            valoareCititaAdc = 0U;
             g_adc0.p_api->read(g_adc0.p_ctrl, 0, &valoareCititaAdc);
             adc_buf[adc_index] = valoareCititaAdc;
-            adc_index++;
         }
-        adc_index = 0U;
         /*Trimitere pe UART*/
-        uart0_buf[0] = uart_header_index + 10U; /*plus 10 ca sa inceapa de la 10 headerele, la fel ca in aplicatia de pe PC*/
-        uart0_buf[1] = (uint8_t)(adc_buf[0] >> 4U);
-        uart0_buf[2] = (uint8_t)(((adc_buf[0] & 0x0F) << 4U) + (adc_buf[1] >> 8U));
-        uart0_buf[3] = (uint8_t)(adc_buf[1] & 0xFF);
-        uart0_buf[4] = (uint8_t)(adc_buf[2] >> 4U);
-        uart0_buf[5] = (uint8_t)(((adc_buf[2] & 0x0F) << 4U) + (adc_buf[3] >> 8U));
-        uart0_buf[6] = (uint8_t)(adc_buf[3] & 0xFF);
-        uart0_buf[7] = (uint8_t)(adc_buf[4] >> 4U);
-        uart0_buf[8] = (uint8_t)(((adc_buf[4] & 0x0F) << 4U) + (adc_buf[5] >> 8U));
-        uart0_buf[9] = (uint8_t)(adc_buf[5] & 0xFF);
-        uart0_buf[10] = (uint8_t)(adc_buf[6] >> 4U);
-        uart0_buf[11] = (uint8_t)(((adc_buf[6] & 0x0F) << 4U) + (adc_buf[7] >> 8U));
-        uart0_buf[12] = (uint8_t)(adc_buf[7] & 0xFF);
-        uart0_buf[13] = (uint8_t)(adc_buf[8] >> 4U);
-        uart0_buf[14] = (uint8_t)(((adc_buf[8] & 0x0F) << 4U) + (adc_buf[9] >> 8U));
-        uart0_buf[15] = (uint8_t)(adc_buf[9] & 0xFF);
-        uart0_buf[16] = CRC_calculate(17);
-        g_uart0.p_api->write(g_uart0.p_ctrl, uart0_buf, uart0_send_num);
-        uart_header_index = (uint8_t)((uart_header_index + 1U) % 10U);
+        for(uint8_t uart_send_index = 0U; uart_send_index < UART_SEND_MESSAGES; uart_send_index++){
+            uint16_t adc_offset = uart_send_index * 10U;
+            uart0_buf[0] = 10U;
+            uart0_buf[1] = uart_send_index;
+            uart0_buf[2] = (uint8_t)(adc_buf[0 + adc_offset] >> 4U);
+            uart0_buf[3] = (uint8_t)(((adc_buf[0 + adc_offset] & 0x0F) << 4U) + (adc_buf[1 + adc_offset] >> 8U));
+            uart0_buf[4] = (uint8_t)(adc_buf[1 + adc_offset] & 0xFF);
+            uart0_buf[5] = (uint8_t)(adc_buf[2 + adc_offset] >> 4U);
+            uart0_buf[6] = (uint8_t)(((adc_buf[2 + adc_offset] & 0x0F) << 4U) + (adc_buf[3 + adc_offset] >> 8U));
+            uart0_buf[7] = (uint8_t)(adc_buf[3 + adc_offset] & 0xFF);
+            uart0_buf[8] = (uint8_t)(adc_buf[4 + adc_offset] >> 4U);
+            uart0_buf[9] = (uint8_t)(((adc_buf[4 + adc_offset] & 0x0F) << 4U) + (adc_buf[5 + adc_offset] >> 8U));
+            uart0_buf[10] = (uint8_t)(adc_buf[5 + adc_offset] & 0xFF);
+            uart0_buf[11] = (uint8_t)(adc_buf[6 + adc_offset] >> 4U);
+            uart0_buf[12] = (uint8_t)(((adc_buf[6 + adc_offset] & 0x0F) << 4U) + (adc_buf[7 + adc_offset] >> 8U));
+            uart0_buf[13] = (uint8_t)(adc_buf[7 + adc_offset] & 0xFF);
+            uart0_buf[14] = (uint8_t)(adc_buf[8 + adc_offset] >> 4U);
+            uart0_buf[15] = (uint8_t)(((adc_buf[8 + adc_offset] & 0x0F) << 4U) + (adc_buf[9 + adc_offset] >> 8U));
+            uart0_buf[16] = (uint8_t)(adc_buf[9 + adc_offset] & 0xFF);
+            uart0_buf[17] = CRC_calculate(18);
+            g_uart0.p_api->write(g_uart0.p_ctrl, uart0_buf, UART_MESSAGE_SIZE);
+            while(flagUart == 0U);
+            flagUart = 0;
+        }
+        //tx_thread_sleep(0);
     }
 }
