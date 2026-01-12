@@ -11,12 +11,13 @@ volatile uint16_t adc_offset = 0U;
 volatile uint8_t uart_send_index = 0U;
 volatile uint16_t adc_buf[1000];
 volatile uint16_t adc_index = 0U;
-
+volatile uint8_t test = 0U;
 
 
 uint8_t CRC_calculate(uint8_t length);
 void user_uart_callback(uart_callback_args_t *p_args){
     (void)p_args;
+    if(p_args->event == UART_EVENT_TX_COMPLETE)
     flagUart = 1U;
 }
 
@@ -88,7 +89,7 @@ void blinky_thread_entry(void)
         }
         adc_index = 0U;
         /*Trimitere pe UART*/
-        for(uart_send_index = 0U; uart_send_index < MESAJE_NECESARE_UART; uart_send_index++){
+        for(uart_send_index = 0U; uart_send_index < MESAJE_NECESARE_UART; ){
             adc_offset = uart_send_index * 10U;
             mesaj_uart[0] = 10U;
             mesaj_uart[1] = uart_send_index;
@@ -111,6 +112,7 @@ void blinky_thread_entry(void)
             g_uart0.p_api->write(g_uart0.p_ctrl, mesaj_uart, MARIME_MESAJ_UART);
             while(flagUart == 0U);
             flagUart = 0;
+            uart_send_index++;
         }
     }
 }
