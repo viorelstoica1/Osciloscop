@@ -61,7 +61,6 @@ synergy/ssp/src/bsp/mcu/all \
 synergy/ssp/src/bsp/mcu/s7g2 \
 synergy/ssp/src/driver/r_adc \
 synergy/ssp/src/driver/r_cgc \
-synergy/ssp/src/driver/r_dmac \
 synergy/ssp/src/driver/r_dtc \
 synergy/ssp/src/driver/r_elc \
 synergy/ssp/src/driver/r_gpt \

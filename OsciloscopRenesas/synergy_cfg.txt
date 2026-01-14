@@ -454,9 +454,6 @@ Synergy Configuration
   Module "Timer Driver on r_gpt"
     Parameter Checking: Default (BSP)
     
-  Module "Transfer Driver on r_dmac"
-    Parameter Checking: Default (BSP)
-    
   HAL
     Instance "g_fmi FMI Driver on r_fmi"
       Name: g_fmi
@@ -619,27 +616,17 @@ Synergy Configuration
       Callback: intrerupere_timer
       Overflow Interrupt Priority: Priority 12
       
-    Instance "g_transfer1 Transfer Driver on r_dmac ELC SOFTWARE EVENT 0"
-      Name: g_transfer1
-      Channel: 0
-      Mode: Normal
-      Transfer Size: 2 Bytes
-      Destination Address Mode: Fixed
-      Source Address Mode: Fixed
-      Repeat Area (Unused in Normal Mode): Source
-      Destination Pointer: NULL
-      Source Pointer: NULL
-      Number of Transfers: 0
-      Number of Blocks (Valid only in Repeat and Block Mode): 0
-      Offset value: 0
-      Activation Source: ELC SOFTWARE EVENT 0
-      Auto Enable: True
-      Callback: NULL
-      Transfer End Interrupt Priority: Disabled
-      
-  Thread "Blinky Thread"
-    Symbol: blinky_thread
-    Name: Blinky Thread
+  Thread "Adc acquisition thread"
+    Symbol: acquisition_thread
+    Name: Adc acquisition thread
+    Stack size (bytes): 1024
+    Priority: 1
+    Auto start: Enabled
+    Time slicing interval (ticks): 1
+    
+  Thread "Uart communications thread"
+    Symbol: uart_comm_thread
+    Name: Uart communications thread
     Stack size (bytes): 1024
     Priority: 1
     Auto start: Enabled

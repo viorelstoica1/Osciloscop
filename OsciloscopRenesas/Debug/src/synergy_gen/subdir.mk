@@ -4,25 +4,28 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../src/synergy_gen/blinky_thread.c \
+../src/synergy_gen/acquisition_thread.c \
 ../src/synergy_gen/common_data.c \
 ../src/synergy_gen/hal_data.c \
 ../src/synergy_gen/main.c \
-../src/synergy_gen/pin_data.c 
+../src/synergy_gen/pin_data.c \
+../src/synergy_gen/uart_comm_thread.c 
 
 C_DEPS += \
-./src/synergy_gen/blinky_thread.d \
+./src/synergy_gen/acquisition_thread.d \
 ./src/synergy_gen/common_data.d \
 ./src/synergy_gen/hal_data.d \
 ./src/synergy_gen/main.d \
-./src/synergy_gen/pin_data.d 
+./src/synergy_gen/pin_data.d \
+./src/synergy_gen/uart_comm_thread.d 
 
 OBJS += \
-./src/synergy_gen/blinky_thread.o \
+./src/synergy_gen/acquisition_thread.o \
 ./src/synergy_gen/common_data.o \
 ./src/synergy_gen/hal_data.o \
 ./src/synergy_gen/main.o \
-./src/synergy_gen/pin_data.o 
+./src/synergy_gen/pin_data.o \
+./src/synergy_gen/uart_comm_thread.o 
 
 SREC += \
 OsciloscopRenesas.srec 

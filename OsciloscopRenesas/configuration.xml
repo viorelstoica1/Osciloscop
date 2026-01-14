@@ -656,10 +656,6 @@
       <description>Express Logic ThreadX: Provides=[ThreadX]</description>
       <originalPack>Renesas.Synergy.2.7.0.pack</originalPack>
     </component>
-    <component apiversion="" class="Projects" condition="" group="all" subgroup="BlinkyThreadX" variant="" vendor="Renesas" version="2.7.0">
-      <description>Simple application that blinks an LED. ThreadX RTOS included</description>
-      <originalPack>Renesas.SynergyBlinkyThreadX.2.7.0.pack</originalPack>
-    </component>
     <component apiversion="" class="BSP" condition="" group="Board" subgroup="s7g2_sk" variant="" vendor="Renesas" version="2.7.0">
       <description>S7G2_SK Board Support Files</description>
       <originalPack>Renesas.Synergy_board_s7g2_sk.2.7.0.pack</originalPack>
@@ -678,10 +674,6 @@
     </component>
     <component apiversion="" class="HAL Drivers" condition="" group="all" subgroup="r_gpt" variant="" vendor="Renesas" version="2.7.0">
       <description>General Purpose Timer: Provides=[Timer ,GPT]</description>
-      <originalPack>Renesas.Synergy.2.7.0.pack</originalPack>
-    </component>
-    <component apiversion="" class="HAL Drivers" condition="" group="all" subgroup="r_dmac" variant="" vendor="Renesas" version="2.7.0">
-      <description>Direct Memory Access Controller: Provides=[Transfer]</description>
       <originalPack>Renesas.Synergy.2.7.0.pack</originalPack>
     </component>
   </synergyComponentSelection>
@@ -849,24 +841,6 @@
       <property id="module.driver.timer.p_callback" value="intrerupere_timer"/>
       <property id="module.driver.timer.irq_ipl" value="board.icu.common.irq.priority12"/>
     </module>
-    <module id="module.driver.transfer_on_dmac.1476518198">
-      <property id="module.driver.transfer.name" value="g_transfer1"/>
-      <property id="module.driver.transfer.channel" value="0"/>
-      <property id="module.driver.transfer.mode" value="module.driver.transfer.mode.mode_normal"/>
-      <property id="module.driver.transfer.size" value="module.driver.transfer.size.size_2_byte"/>
-      <property id="module.driver.transfer.dest_addr_mode" value="module.driver.transfer.dest_addr_mode.addr_mode_fixed"/>
-      <property id="module.driver.transfer.src_addr_mode" value="module.driver.transfer.src_addr_mode.addr_mode_fixed"/>
-      <property id="module.driver.transfer.repeat_area" value="module.driver.transfer.repeat_area.repeat_area_source"/>
-      <property id="module.driver.transfer.p_dest" value="NULL"/>
-      <property id="module.driver.transfer.p_src" value="NULL"/>
-      <property id="module.driver.transfer.length" value="0"/>
-      <property id="module.driver.transfer.num_blocks" value="0"/>
-      <property id="module.driver.transfer.offset" value="0"/>
-      <property id="module.driver.transfer.activation_source" value="module.driver.transfer.event.event_elc_software_event_0"/>
-      <property id="module.driver.transfer.auto_enable" value="module.driver.transfer.auto_enable.true"/>
-      <property id="module.driver.transfer.p_callback" value="NULL"/>
-      <property id="module.driver.transfer.irq_ipl" value="board.icu.common.irq.disabled"/>
-    </module>
     <context id="_hal.0">
       <stack module="module.driver.fmi_on_fmi.0"/>
       <stack module="module.driver.elc_on_elc.0"/>
@@ -877,19 +851,23 @@
       </stack>
       <stack module="module.driver.adc_on_adc.1135686915"/>
       <stack module="module.driver.timer_on_gpt.358450220"/>
-      <stack module="module.driver.transfer_on_dmac.1476518198"/>
     </context>
     <context id="rtos.threadx.thread.0">
-      <property id="_symbol" value="blinky_thread"/>
-      <property id="rtos.threadx.thread.name" value="Blinky Thread"/>
+      <property id="_symbol" value="acquisition_thread"/>
+      <property id="rtos.threadx.thread.name" value="Adc acquisition thread"/>
       <property id="rtos.threadx.thread.stack" value="1024"/>
       <property id="rtos.threadx.thread.priority" value="1"/>
       <property id="rtos.threadx.thread.autostart" value="rtos.threadx.thread.autostart.enabled"/>
       <property id="rtos.threadx.thread.timeslice" value="1"/>
     </context>
-    <config id="config.driver.dmac">
-      <property id="config.driver.dmac.param_checking_enable" value="config.driver.dmac.param_checking_enable.bsp"/>
-    </config>
+    <context id="rtos.threadx.thread.2134010301">
+      <property id="_symbol" value="uart_comm_thread"/>
+      <property id="rtos.threadx.thread.name" value="Uart communications thread"/>
+      <property id="rtos.threadx.thread.stack" value="1024"/>
+      <property id="rtos.threadx.thread.priority" value="1"/>
+      <property id="rtos.threadx.thread.autostart" value="rtos.threadx.thread.autostart.enabled"/>
+      <property id="rtos.threadx.thread.timeslice" value="1"/>
+    </context>
     <config id="config.driver.cgc">
       <property id="config.driver.cgc.param_checking_enable" value="config.driver.cgc.param_checking_enable.bsp"/>
       <property id="config.driver.cgc.main_osc_wait" value="config.driver.cgc.main_osc_wait.wait_547"/>

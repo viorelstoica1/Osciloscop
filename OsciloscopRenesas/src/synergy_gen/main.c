@@ -2,7 +2,8 @@
 #include "bsp_api.h"
 #include "tx_api.h"
 
-extern void blinky_thread_create(void);
+extern void acquisition_thread_create(void);
+extern void uart_comm_thread_create(void);
 
 uint32_t g_ssp_common_thread_count;
 bool g_ssp_common_initialized;
@@ -57,7 +58,8 @@ void tx_application_define(void *first_unused_memory)
         tx_startup_err_callback (&g_ssp_common_initialized_semaphore, 0);
     }
 
-    blinky_thread_create ();
+    acquisition_thread_create ();
+    uart_comm_thread_create ();
 
 #ifdef TX_USER_ENABLE_TRACE
 					TX_USER_ENABLE_TRACE;

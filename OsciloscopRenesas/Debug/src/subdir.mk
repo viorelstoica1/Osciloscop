@@ -4,16 +4,16 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../src/blinky_thread_entry.c \
-../src/hal_entry.c 
+../src/acquisition_thread_entry.c \
+../src/uart_comm_thread_entry.c 
 
 C_DEPS += \
-./src/blinky_thread_entry.d \
-./src/hal_entry.d 
+./src/acquisition_thread_entry.d \
+./src/uart_comm_thread_entry.d 
 
 OBJS += \
-./src/blinky_thread_entry.o \
-./src/hal_entry.o 
+./src/acquisition_thread_entry.o \
+./src/uart_comm_thread_entry.o 
 
 SREC += \
 OsciloscopRenesas.srec 
