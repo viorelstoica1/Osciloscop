@@ -549,7 +549,7 @@ Synergy Configuration
           Channel 27 (S3A7/S3A3 Only): Unused
           Temperature Sensor: Unused
           Voltage Sensor: Unused
-      Normal/Group A Trigger: Software
+      Normal/Group A Trigger: ELC Event
       Group B Trigger (Valid only in Group Scan Mode): ELC Event (The only valid trigger for either group in Group Scan Mode)
       Group Priority (Valid only in Group Scan Mode): Group A cannot interrupt Group B
       Add/Average Count: Disabled

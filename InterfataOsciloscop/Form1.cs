@@ -28,6 +28,7 @@ namespace InterfataOsciloscop
             sDummy.Points.AddXY(1, 3.5);
             Series series = new Series();
             series.ChartType = SeriesChartType.Line;
+            series.BorderWidth = 5;
             series.Points.Clear();
             series.IsVisibleInLegend = false;
             for (int i = 0; i < OsciloscopeData.MarimeBufferTensiuni; i++)
@@ -65,6 +66,7 @@ namespace InterfataOsciloscop
             /*initializare chart*/
             ChartArea chartArea = new ChartArea();
             chartArea.AxisX.Title = "Timp";
+            chartArea.Position.Height = 100;
             chartArea.AxisY.Title = "Tensiune";
             chartVoltage.ChartAreas.Add(chartArea);
             chartVoltage.Series.Clear();

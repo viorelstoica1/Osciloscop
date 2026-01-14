@@ -46,26 +46,29 @@
             // comboBoxComPort
             // 
             this.comboBoxComPort.FormattingEnabled = true;
-            this.comboBoxComPort.Location = new System.Drawing.Point(100, 12);
+            this.comboBoxComPort.Location = new System.Drawing.Point(83, 10);
+            this.comboBoxComPort.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.comboBoxComPort.Name = "comboBoxComPort";
-            this.comboBoxComPort.Size = new System.Drawing.Size(121, 28);
+            this.comboBoxComPort.Size = new System.Drawing.Size(102, 24);
             this.comboBoxComPort.TabIndex = 0;
             // 
             // labelComPort
             // 
             this.labelComPort.AutoSize = true;
-            this.labelComPort.Location = new System.Drawing.Point(12, 15);
+            this.labelComPort.Location = new System.Drawing.Point(10, 12);
+            this.labelComPort.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelComPort.Name = "labelComPort";
-            this.labelComPort.Size = new System.Drawing.Size(82, 20);
+            this.labelComPort.Size = new System.Drawing.Size(67, 16);
             this.labelComPort.TabIndex = 1;
             this.labelComPort.Text = "COM Port:";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(227, 15);
+            this.label1.Location = new System.Drawing.Point(189, 12);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(79, 20);
+            this.label1.Size = new System.Drawing.Size(65, 16);
             this.label1.TabIndex = 2;
             this.label1.Text = "Baudrate:";
             // 
@@ -79,16 +82,18 @@
             "57600",
             "115200",
             "921600"});
-            this.comboBoxBaudrate.Location = new System.Drawing.Point(312, 12);
+            this.comboBoxBaudrate.Location = new System.Drawing.Point(260, 10);
+            this.comboBoxBaudrate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.comboBoxBaudrate.Name = "comboBoxBaudrate";
-            this.comboBoxBaudrate.Size = new System.Drawing.Size(121, 28);
+            this.comboBoxBaudrate.Size = new System.Drawing.Size(102, 24);
             this.comboBoxBaudrate.TabIndex = 3;
             // 
             // buttonConnect
             // 
-            this.buttonConnect.Location = new System.Drawing.Point(439, 12);
+            this.buttonConnect.Location = new System.Drawing.Point(366, 10);
+            this.buttonConnect.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.buttonConnect.Name = "buttonConnect";
-            this.buttonConnect.Size = new System.Drawing.Size(89, 28);
+            this.buttonConnect.Size = new System.Drawing.Size(74, 23);
             this.buttonConnect.TabIndex = 5;
             this.buttonConnect.Text = "Connect";
             this.buttonConnect.UseVisualStyleBackColor = true;
@@ -98,9 +103,10 @@
             // 
             this.labelConnectionStatus.AutoSize = true;
             this.labelConnectionStatus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.labelConnectionStatus.Location = new System.Drawing.Point(534, 16);
+            this.labelConnectionStatus.Location = new System.Drawing.Point(445, 13);
+            this.labelConnectionStatus.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelConnectionStatus.Name = "labelConnectionStatus";
-            this.labelConnectionStatus.Size = new System.Drawing.Size(107, 20);
+            this.labelConnectionStatus.Size = new System.Drawing.Size(90, 16);
             this.labelConnectionStatus.TabIndex = 6;
             this.labelConnectionStatus.Text = "Disconnected";
             // 
@@ -111,14 +117,16 @@
             this.chartVoltage.IsSoftShadows = false;
             legend1.Name = "Legend1";
             this.chartVoltage.Legends.Add(legend1);
-            this.chartVoltage.Location = new System.Drawing.Point(12, 46);
+            this.chartVoltage.Location = new System.Drawing.Point(10, 38);
+            this.chartVoltage.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.chartVoltage.Name = "chartVoltage";
+            series1.BorderWidth = 5;
             series1.ChartArea = "ChartArea1";
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
             series1.Legend = "Legend1";
             series1.Name = "Series1";
             this.chartVoltage.Series.Add(series1);
-            this.chartVoltage.Size = new System.Drawing.Size(1421, 601);
+            this.chartVoltage.Size = new System.Drawing.Size(1570, 911);
             this.chartVoltage.TabIndex = 7;
             this.chartVoltage.TabStop = false;
             this.chartVoltage.Text = "chartVoltage";
@@ -131,9 +139,9 @@
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(144F, 144F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(1445, 656);
+            this.ClientSize = new System.Drawing.Size(1582, 953);
             this.Controls.Add(this.chartVoltage);
             this.Controls.Add(this.labelConnectionStatus);
             this.Controls.Add(this.buttonConnect);
@@ -141,6 +149,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.labelComPort);
             this.Controls.Add(this.comboBoxComPort);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "Form1";
             this.Text = "Osciloscop";
             ((System.ComponentModel.ISupportInitialize)(this.chartVoltage)).EndInit();
